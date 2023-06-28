@@ -1,4 +1,4 @@
-# HamilToniQ: Comprehensive optimization and benchmarking for mixer Hamiltonian in QAOA with error mitigation
+# HamilToniQ: Comprehensive Optimization and Benchmarking for Mixer Hamiltonian in QAOA with Error Mitigation
 This is the repository for IBM Quantum Hackathon 2023 at the World of Quantum with the topic of encoding (Mixer Hamiltonian)
 
 ![alt text](https://github.com/Louisanity/HamilToniQ//blob/main/pictures/overview.png?raw=true)
@@ -8,8 +8,11 @@ This is the repository for IBM Quantum Hackathon 2023 at the World of Quantum wi
 2. Mixer Hamiltonian Formulation
 3. Post-processing of mixer Hamiltonian
 4. Error mitigation
-6. Scale plot of $\beta$ and $\gamma$
-7. QASM, noisy simulator and real harware benchmark
+5. QAOA Circuit Depth Reduction
+7. QASM, Noisy Simulator and Real Hardware Benchmark
+
+### Motivation
+Quantum computing is an emerging field with the potential to revolutionize various sectors. The Quantum Approximate Optimization Algorithm (QAOA) is a promising quantum algorithm for near-term devices, but its performance is often limited by the depth of the quantum circuit (Hamiltonian Formation). To address this, we are developing an open-source benchmarking kit for QAOA based on Qiskit, a popular quantum computing framework. This project, the first of its kind on GitHub, will focus on depth reduction techniques for QAOA circuits to improve their performance on real quantum devices. Additionally, we will leverage the Qiskit Runtime function and incorporate error mitigation techniques, enabling comprehensive benchmarking on both Qiskit's simulators and real quantum hardware. Our project aims to contribute to the practical development of quantum computing by providing a valuable resource for the quantum computing community.
 
 ### Quantum Approximate Optimization Algorithm (QAOA)
 The Quantum Approximate Optimization Algorithm (QAOA)is a hybrid quantum-classical algorithm that has been proposed as a practical method to solve combinatorial optimization problems on near-term, noisy intermediate-scale quantum (NISQ) devices. QAOA operates by approximating the ground state of a problem Hamiltonian (H_P), which encodes the optimization problem to be solved.
@@ -27,9 +30,32 @@ every other.
 two-dimensional grid, and interactions are allowed between neighboring qubits. This problem type is particularly
 relevant for near-term quantum devices, as it mirrors the connectivity constraints of actual quantum hardware.
 
+### Reduction of the depth of a XY mixer
+
+To avoid increased depth and a huge ammount of SWAP gates when implementing XY mixers we find the best strategy for each coupling map. We divide coupling map group into multiply sub groups, such that the pairs in each sub group indicate the qubits where XY mixers are applied on at the same time. This condition can be transformed as two constraints on sub groups: (1) sub groups are complete (2) there is no deplication of qubits in every sub group.
+
+The problem of depth optimization in quantum circuit design is a crucial aspect of quantum computing. It involves
+finding an optimal sequence of deletions of edges in a graph representing the quantum circuit, with the goal of
+minimizing the number of steps required. This is subject to the constraint that two edges sharing a common node cannot
+be deleted in the same step.
+This problem can be viewed as a variant of the graph colouring problem, where the goal is to assign colours to the
+vertices of a graph such that no two adjacent vertices share the same colour. In the context of the coupling optimization
+problem, the "colours" are the steps in which the edges are deleted, and the "vertices" are the edges in the original graph.
+Two edges are "adjacent" if they share a common node
+ 
 ### Error Mitigation 
 
 We compare X and XY mixers with and without error mitigation by setting the resilience_level to 0 (no error mitigation) or 1 ( error mitigation). Particular error mitigation we used was T-REx.
+
+## Requirements
+Required packages to run the code are listed in `requirements.txt` and can be installed by running:
+```
+pip install -r requirements.txt
+```
+
+
+
+
 
 ## References
 [(1) Benchmarking the performance of portfolio optimization with QAOA https://arxiv.org/abs/2207.10555 <br>
