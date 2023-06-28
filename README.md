@@ -54,7 +54,7 @@ The picture below compares four different mixers applied to three different prob
 In the rightmost picture, one can identify the noise by comparing the X-mixer results with the noise-free simulation.
 
 
-![alt text](https://github.com/Louisanity/HamilToniQ//blob/main/pictures/stablility.png?raw=true)
+![alt text](https://github.com/Louisanity/HamilToniQ//blob/main/pictures/stability.png?raw=true)
 
 ### Mixed Hamiltonian Benchmark
 
