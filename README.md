@@ -50,6 +50,10 @@ We compare X and XY mixers with and without error mitigation by setting the resi
 
 ![alt text](https://github.com/Louisanity/HamilToniQ//blob/main/pictures/felixmax1.png?raw=true)
 
+### Stability Test
+
+![alt text](https://github.com/Louisanity/HamilToniQ//blob/main/pictures/stablility.png?raw=true)
+
 ## Requirements
 Required packages to run the code are listed in `requirements.txt` and can be installed by running:
 ```
