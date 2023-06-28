@@ -3,7 +3,10 @@ This is the repository for IBM Quantum Hackathon 2023 at the World of Quantum wi
 
 ![alt text](https://github.com/Louisanity/HamilToniQ//blob/main/pictures/overview.png?raw=true)
 
-## Project Summary
+## Summary
+
+This project includes the following parts:
+
 1. Problem Formulation
 2. Mixer Hamiltonian Formulation
 3. Post-processing of mixer Hamiltonian
