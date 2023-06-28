@@ -16,6 +16,7 @@ Quantum computing is an emerging field with the potential to revolutionize vario
 
 ### Quantum Approximate Optimization Algorithm (QAOA)
 The Quantum Approximate Optimization Algorithm (QAOA)is a hybrid quantum-classical algorithm that has been proposed as a practical method to solve combinatorial optimization problems on near-term, noisy intermediate-scale quantum (NISQ) devices. QAOA operates by approximating the ground state of a problem Hamiltonian (H_P), which encodes the optimization problem to be solved.
+![alt text](https://github.com/Louisanity/HamilToniQ//blob/main/pictures/QAOA_steps.png?raw=true)
 
 ### Problem formulation
 We study Quantum Approximate Optimization Algorithm (QAOA) on three distinct
