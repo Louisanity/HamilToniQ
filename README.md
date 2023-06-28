@@ -48,6 +48,8 @@ Two edges are "adjacent" if they share a common node
 
 We compare X and XY mixers with and without error mitigation by setting the resilience_level to 0 (no error mitigation) or 1 ( error mitigation). Particular error mitigation we used was twirled readout error extinction (T-REx). This ansatz makes no assumption about the type of noise in the system, and is therefore generally effective [3].
 
+![alt text](https://github.com/Louisanity/HamilToniQ//blob/main/pictures/felixmax1.png?raw=true)
+
 ## Requirements
 Required packages to run the code are listed in `requirements.txt` and can be installed by running:
 ```
