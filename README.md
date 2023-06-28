@@ -15,7 +15,7 @@ This is the repository for IBM Quantum Hackathon 2023 at the World of Quantum wi
 Quantum computing is an emerging field with the potential to revolutionize various sectors. The Quantum Approximate Optimization Algorithm (QAOA) is a promising quantum algorithm for near-term devices, but its performance is often limited by the depth of the quantum circuit (Hamiltonian Formation). To address this, we are developing an open-source benchmarking kit for QAOA based on Qiskit, a popular quantum computing framework. This project, the first of its kind on GitHub, will focus on depth reduction techniques for QAOA circuits to improve their performance on real quantum devices. Additionally, we will leverage the Qiskit Runtime function and incorporate error mitigation techniques, enabling comprehensive benchmarking on both Qiskit's simulators and real quantum hardware. Our project aims to contribute to the practical development of quantum computing by providing a valuable resource for the quantum computing community.
 
 ### Quantum Approximate Optimization Algorithm (QAOA)
-The Quantum Approximate Optimization Algorithm (QAOA)is a hybrid quantum-classical algorithm that has been proposed as a practical method to solve combinatorial optimization problems on near-term, noisy intermediate-scale quantum (NISQ) devices. QAOA operates by approximating the ground state of a problem Hamiltonian (H_P), which encodes the optimization problem to be solved.
+The Quantum Approximate Optimization Algorithm (QAOA)is a hybrid quantum-classical algorithm that has been proposed as a practical method to solve combinatorial optimization problems on near-term, noisy intermediate-scale quantum (NISQ) devices. QAOA operates by approximating the ground state of a problem Hamiltonian (H_P), which encodes the optimization problem to be solved. The algorithm first evolves the initial state through repeated, alternating application of mixer Hamiltonians and phase separations. The expectation value with respect to this final state is evaluated. If the expectation value meets the required tolerance, the algortihm stops. If not, the expectation value is passed to a classical optimizer, which alters the parameters of the mixer and phase separation operators. The process is then repeated with these new parameters until the expectation value is minimized.
 ![alt text](https://github.com/Louisanity/HamilToniQ//blob/main/pictures/QAOA_steps.png?raw=true)
 
 ### Problem formulation
@@ -46,7 +46,7 @@ Two edges are "adjacent" if they share a common node
  
 ### Error Mitigation 
 
-We compare X and XY mixers with and without error mitigation by setting the resilience_level to 0 (no error mitigation) or 1 ( error mitigation). Particular error mitigation we used was T-REx.
+We compare X and XY mixers with and without error mitigation by setting the resilience_level to 0 (no error mitigation) or 1 ( error mitigation). Particular error mitigation we used was twirled readout error extinction (T-REx). This ansatz makes no assumption about the type of noise in the system, and is therefore generally effective [3].
 
 ## Requirements
 Required packages to run the code are listed in `requirements.txt` and can be installed by running:
