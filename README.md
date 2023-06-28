@@ -66,6 +66,8 @@ In the results above the quantum circuit was measured directly which introduces 
 ![alt text](https://github.com/Louisanity/HamilToniQ//blob/main/pictures/result.png?raw=true)
 
 ### Conclusion
+In conclusion, our project, HamilToniQ, provides a comprehensive approach to optimizing and benchmarking the mixer Hamiltonian in QAOA with error mitigation. We have explored three distinct problem types: Hardware Grid, Three Regular, and Sherrington-Kirkpatrick (SK) model problems. Our approach includes a novel strategy for reducing the depth of the quantum circuit, which is a critical factor in the performance of QAOA on real quantum devices. We have also incorporated error mitigation techniques, specifically twirled readout error extinction (T-REx), to further enhance the performance. Our benchmarking results, obtained from both simulators and real quantum hardware, demonstrate the effectiveness of our approach. By providing this open-source benchmarking kit, we aim to contribute to the practical development of quantum computing and provide a valuable resource for the quantum computing community.
+
 
 ## Requirements
 Required packages to run the code are listed in `requirements.txt` and can be installed by running:
