@@ -54,7 +54,13 @@ We compare X and XY mixers with and without error mitigation by setting the resi
 
 ![alt text](https://github.com/Louisanity/HamilToniQ//blob/main/pictures/stablility.png?raw=true)
 
+
+The picture above compares four different mixers applied to three different problems executed on a noise-free simulator, noisy simulator and on hardware. The colormap is defined in a way that a dark spot corresponds to low energy. Therefore the solution set of possible ground states is restricted by the colormaps. The X-mixer restricts the solution set only minor but the ring, parity and full mixer improve the result significantly.
+On the right most picture one can identify the noise by comparing the X-mixer results with the noise-free simulation.
+
 ### Mixed Hamiltonian Benchmark
+
+In the results above the quantum circuit was measured directly which introduces sampling errors. In order to prevent these errors one can directly compute the statevector of the quantum circuit. This leads to a significant improvement of the plot because the periodic structure of the different mixers can be seen. Furthermore it is now possible to identify the possible ground states by the dark spots on the colormap. So for example in the standard problem we could reduce the possible ground states from eight to two with two side-peaks. In the case of the three-regular problem the possible ground states could be reduced by half. As the SK model is completely symmetric and the amount of excitations is preserved in the XY-mixer the colormap needs to be completely flat. 
 
 ## Requirements
 Required packages to run the code are listed in `requirements.txt` and can be installed by running:
