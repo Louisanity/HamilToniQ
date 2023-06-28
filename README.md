@@ -8,8 +8,8 @@ This is the repository for IBM Quantum Hackathon 2023 at the World of Quantum wi
 2. Mixer Hamiltonian Formulation
 3. Post-processing of mixer Hamiltonian
 4. Error mitigation
-6. Scale plot of $\beta$ and $\gamma$
-7. QASM, noisy simulator and real harware benchmark
+5. QAOA Circuit Depth Reduction
+7. QASM, Noisy Simulator and Real Hardware Benchmark
 
 ### Motivation
 Quantum computing is an emerging field with the potential to revolutionize various sectors. The Quantum Approximate Optimization Algorithm (QAOA) is a promising quantum algorithm for near-term devices, but its performance is often limited by the depth of the quantum circuit (Hamiltonian Formation). To address this, we are developing an open-source benchmarking kit for QAOA based on Qiskit, a popular quantum computing framework. This project, the first of its kind on GitHub, will focus on depth reduction techniques for QAOA circuits to improve their performance on real quantum devices. Additionally, we will leverage the Qiskit Runtime function and incorporate error mitigation techniques, enabling comprehensive benchmarking on both Qiskit's simulators and real quantum hardware. Our project aims to contribute to the practical development of quantum computing by providing a valuable resource for the quantum computing community.
