@@ -1,4 +1,4 @@
-# HamilToniQ
+# HamilToniQ: COMPREHENSIVE OPTIMIZATION AND BENCHMARKING FOR MIXER HAMILTONIAN IN QAOA WITH ERROR MITIGATION
 This is the repository for IBM Quantum Hackathon 2023 at the World of Quantum with the topic of encoding (Mixer Hamiltonian)
 
 ## Project Summary
@@ -8,6 +8,9 @@ This is the repository for IBM Quantum Hackathon 2023 at the World of Quantum wi
 4. Error mitigation
 6. Scale plot of $\beta$ and $\gamma$
 7. QASM, noisy simulator and real harware benchmark
+
+### Quantum Approximate Optimization Algorithm (QAOA)
+The Quantum Approximate Optimization Algorithm (QAOA)is a hybrid quantum-classical algorithm that has been proposed as a practical method to solve combinatorial optimization problems on near-term, noisy intermediate-scale quantum (NISQ) devices. QAOA operates by approximating the ground state of a problem Hamiltonian (H_P), which encodes the optimization problem to be solved.
 
 ### Problem formulation
 We study Quantum Approximate Optimization Algorithm (QAOA) on three distinct
