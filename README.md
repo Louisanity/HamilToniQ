@@ -50,7 +50,7 @@ We compare X and XY mixers with and without error mitigation by setting the resi
 
 ### Stability Test
 
-The picture below compares four different mixers applied to three different problems executed on a noise-free simulator, a noisy simulator and on hardware. The colourmap is defined in a way that a dark spot corresponds to low energy. Therefore the solution set of possible ground states is restricted by the colourmaps. The X-mixer restricts the solution set only minor but the ring, parity and full mixer improve the result significantly.
+The picture below compares four different mixers applied to three different problems executed on noise-free simulators 'qasm' and 'aer' and on a noisy simulator. We also queued the job for executing it on real hardware but the queue was too long to get the results in time. The colourmap is defined in a way that a dark spot corresponds to low energy. Therefore the solution set of possible ground states is restricted by the colourmaps. The X-mixer restricts the solution set only minor but the ring, parity and full mixer improve the result significantly.
 In the rightmost picture, one can identify the noise by comparing the X-mixer results with the noise-free simulation.
 
 
