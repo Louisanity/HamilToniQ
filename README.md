@@ -11,3 +11,5 @@ This is the repository for IBM Quantum Hackathon 2023 at the World of Quantum wi
 
 ## References
 [(1) Benchmarking the performance of portfolio optimization with QAOA https://arxiv.org/abs/2207.10555 <br>
+[(2) A Quantum Approximate Optimization Algorithm https://arxiv.org/abs/1411.4028 <br>
+[(3) 
