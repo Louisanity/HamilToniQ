@@ -48,8 +48,12 @@ Two edges are "adjacent" if they share a common node
 We compare X and XY mixers with and without error mitigation by setting the resilience_level to 0 (no error mitigation) or 1 ( error mitigation). Particular error mitigation we used was T-REx.
 
 ## Requirements
+Required packages to run the code are listed in `requirements.txt` and can be installed by running:
+```
+pip install -r requirements.txt
+```
 
-In order to run the code, the following packages are needed:
+
 
 
 
