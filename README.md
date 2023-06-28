@@ -6,10 +6,14 @@ This is the repository for IBM Quantum Hackathon 2023 at the World of Quantum wi
 2. Mixer Hamiltonian Formulation
 3. Post-processing of mixer Hamiltonian
 4. Error mitigation
-5. Scale plot of $\beta$ and $\gamma$
-6. QASM, noisy simulator and real harware benchmark
+6. Scale plot of $\beta$ and $\gamma$
+7. QASM, noisy simulator and real harware benchmark
+
+### Error Mitigation 
+
+We compare X and XY mixers with and without error mitigation by setting the resilience_level to 0 (no error mitigation) or 1 ( error mitigation). Particular error mitigation we used was T-REx.
 
 ## References
 [(1) Benchmarking the performance of portfolio optimization with QAOA https://arxiv.org/abs/2207.10555 <br>
 [(2) A Quantum Approximate Optimization Algorithm https://arxiv.org/abs/1411.4028 <br>
-[(3) 
+[(3) Model-free readout-error mitigation for quantum expectation values https://arxiv.org/abs/2012.09738
