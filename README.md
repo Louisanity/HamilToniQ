@@ -31,7 +31,7 @@ every other.
 two-dimensional grid, and interactions are allowed between neighboring qubits. This problem type is particularly
 relevant for near-term quantum devices, as it mirrors the connectivity constraints of actual quantum hardware.
 
-### Reduction of the depth of a XY mixer
+### XY mixer Reduction of the depth
 
 To avoid increased depth and a huge ammount of SWAP gates when implementing XY mixers we find the best strategy for each coupling map. We divide coupling map group into multiple sub groups, such that the pairs in each subgroup indicate the qubits where XY mixers are simultaneously applied. This condition can be transformed as two constraints on sub groups: (1) sub groups are complete (2) there is no duplication of qubits in every subgroup.
 
