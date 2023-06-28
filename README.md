@@ -31,7 +31,7 @@ every other.
 two-dimensional grid, and interactions are allowed between neighboring qubits. This problem type is particularly
 relevant for near-term quantum devices, as it mirrors the connectivity constraints of actual quantum hardware.
 
-### Reduction of the depth of a XY mixer
+### XY mixer Reduction of the depth
 
 To avoid increased depth and a huge ammount of SWAP gates when implementing XY mixers we find the best strategy for each coupling map. We divide coupling map group into multiply sub groups, such that the pairs in each sub group indicate the qubits where XY mixers are applied on at the same time. And our goal is to find the minimum nuumber of subgroups. This condition can be transformed as two constraints on sub groups: (1) sub groups are complete (2) there is no deplication of qubits in every sub group.
 
@@ -47,9 +47,22 @@ We compare X and XY mixers with and without error mitigation by setting the resi
 
 ### Stability Test
 
+The picture below compares four different mixers applied to three different problems executed on a noise-free simulator, a noisy simulator and on hardware. The colourmap is defined in a way that a dark spot corresponds to low energy. Therefore the solution set of possible ground states is restricted by the colourmaps. The X-mixer restricts the solution set only minor but the ring, parity and full mixer improve the result significantly.
+In the rightmost picture, one can identify the noise by comparing the X-mixer results with the noise-free simulation.
+
+
 ![alt text](https://github.com/Louisanity/HamilToniQ//blob/main/pictures/stablility.png?raw=true)
 
 ### Mixed Hamiltonian Benchmark
+
+In the results above the quantum circuit was measured directly which introduces sampling errors. In order to prevent these errors one can directly compute the state vector of the quantum circuit. This leads to a significant improvement in the plot because the periodic structure of the different mixers can be seen. Furthermore, it is now possible to identify the possible ground states by the dark spots on the colourmap. So for example in the standard problem, we could reduce the possible ground states from eight to two with two side peaks. In the case of the three-regular problem, the possible ground states could be reduced by half. As the SK model is completely symmetric and the amount of excitations is preserved in the XY-mixer the colormap needs to be completely flat. 
+
+
+![alt text](https://github.com/Louisanity/HamilToniQ//blob/main/pictures/result.png?raw=true)
+
+### Conclusion
+In conclusion, our project, HamilToniQ, provides a comprehensive approach to optimizing and benchmarking the mixer Hamiltonian in QAOA with error mitigation. We have explored three distinct problem types: Hardware Grid, Three Regular, and Sherrington-Kirkpatrick (SK) model problems. Our approach includes a novel strategy for reducing the depth of the quantum circuit, which is a critical factor in the performance of QAOA on real quantum devices. We have also incorporated error mitigation techniques, specifically twirled readout error extinction (T-REx), to further enhance the performance. Our benchmarking results, obtained from both simulators and real quantum hardware, demonstrate the effectiveness of our approach. By providing this open-source benchmarking kit, we aim to contribute to the practical development of quantum computing and provide a valuable resource for the quantum computing community.
+
 
 ## Requirements
 Required packages to run the code are listed in `requirements.txt` and can be installed by running:
