@@ -1,4 +1,4 @@
-# HamilToniQ: Comprehensive optimization and benchmarking for mixer Hamiltonian in QAOA with error mitigation
+# HamilToniQ: Comprehensive Optimization and Benchmarking for Mixer Hamiltonian in QAOA with Error Mitigation
 This is the repository for IBM Quantum Hackathon 2023 at the World of Quantum with the topic of encoding (Mixer Hamiltonian)
 
 ![alt text](https://github.com/Louisanity/HamilToniQ//blob/main/pictures/overview.png?raw=true)
