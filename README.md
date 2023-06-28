@@ -30,9 +30,28 @@ every other.
 two-dimensional grid, and interactions are allowed between neighboring qubits. This problem type is particularly
 relevant for near-term quantum devices, as it mirrors the connectivity constraints of actual quantum hardware.
 
+### Reduction of the depth of a XY mixer
+
+To avoid increased depth and a huge ammount of SWAP gates when implementing XY mixers we find the best strategy for each coupling map. We divide coupling map group into multiply sub groups, such that the pairs in each sub group indicate the qubits where XY mixers are applied on at the same time. This condition can be transformed as two constraints on sub groups: (1) sub groups are complete (2) there is no deplication of qubits in every sub group.
+
+The problem of depth optimization in quantum circuit design is a crucial aspect of quantum computing. It involves
+finding an optimal sequence of deletions of edges in a graph representing the quantum circuit, with the goal of
+minimizing the number of steps required. This is subject to the constraint that two edges sharing a common node cannot
+be deleted in the same step.
+This problem can be viewed as a variant of the graph colouring problem, where the goal is to assign colours to the
+vertices of a graph such that no two adjacent vertices share the same colour. In the context of the coupling optimization
+problem, the "colours" are the steps in which the edges are deleted, and the "vertices" are the edges in the original graph.
+Two edges are "adjacent" if they share a common node
+ 
 ### Error Mitigation 
 
 We compare X and XY mixers with and without error mitigation by setting the resilience_level to 0 (no error mitigation) or 1 ( error mitigation). Particular error mitigation we used was T-REx.
+
+## Requirements
+
+In order to run the code, the following packages are needed:
+
+
 
 ## References
 [(1) Benchmarking the performance of portfolio optimization with QAOA https://arxiv.org/abs/2207.10555 <br>
