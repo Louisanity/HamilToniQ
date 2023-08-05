@@ -78,6 +78,6 @@ pip install -r requirements.txt
 
 
 ## References
-[(1) Benchmarking the performance of portfolio optimization with QAOA https://arxiv.org/abs/2207.10555 <br>
-[(2) A Quantum Approximate Optimization Algorithm https://arxiv.org/abs/1411.4028 <br>
-[(3) Model-free readout-error mitigation for quantum expectation values https://arxiv.org/abs/2012.09738
+(1) Benchmarking the performance of portfolio optimization with QAOA https://arxiv.org/abs/2207.10555 <br>
+(2) A Quantum Approximate Optimization Algorithm https://arxiv.org/abs/1411.4028 <br>
+(3) Model-free readout-error mitigation for quantum expectation values https://arxiv.org/abs/2012.09738
