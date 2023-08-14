@@ -1,32 +1,34 @@
-from typing import List
+"""
+This Class is defined to give an overall score of the QAOA performance on a quantum hardware
+"""
+
+from typing import Callable, List, Any
+import sys
+sys.path.append('..')
 
 import numpy as np
+from pathlib import Path
+from scipy.optimize import minimize
+from qiskit import QuantumCircuit
+from functools import partial
 
+from .qiskit_tools import Ising_to_ansatz, qiskit_sampler
+from .unitity import Q_to_Ising
+from .matrices import *
 
-def return_hardness(return_vec: List(float)) -> float:
-    """
-    A function calculating the QAOA hardness according of a return vector
-    Args:
-        return_vec (List(float)): the return vector
-    return:
-        hardness (float): the hardness in the range between -1 and 1.
-    """
-    hardness = np.var(return_vec)
-    return hardness
+Counts = Any
+Circuit = Any
 
+class Toniq:
+    def __init__(self) -> None:
+        self.Q = dim_4_var_8
+        self.rep = 3
+        pass
 
-def covariance_hardness(covariance: List(List(float))) -> float:
-    """
-    A function calculating the QAOA hardness according of a covariance matrix
-    Args:
-        covariance (List(List(float)): the covariance matrix
-    return:
-        hardness (float): the hardness in the range between -1 and 1.
-    """
-    normalized_covariance = [
-        covariance[i, j] / np.sqrt(covariance[i, i] * covariance[j, j])
-        for j in range(i + 1)
-        for i in range(len(covariance))
-    ]
-    hardness = np.var(normalized_covariance)
-    return hardness
+    def run(self, ansatz: Callable[[list, list, int], Circuit], sampler: Callable[[Circuit], Counts]) -> float:
+        paulis_terms, weights, offset = Q_to_Ising(self.Q)
+        loaded_ansatz = partial(ansatz, paulis_terms, weights, self.rep)
+
+        counts = sampler(loaded_ansatz)
+        cost = self.counts_to_cost(counts, Q)
+        

@@ -13,6 +13,7 @@ import random
 import numpy as np
 import qiskit
 import math
+import argparse
 
 from typing import List
 
@@ -128,11 +129,12 @@ class Toniq:
         # initial_state
         qc.h(range(nqubits))
 
-        # problem unitary
-        for layer_index, pair in enumerate(list(graph.edges())):
-            qc.rzz(2 * gamma[layer_index], pair[0], pair[1])
-        # mixer unitary
-        qc = self.get_mixer_from_string(mixerStr, qc, nqubits, beta[layer_index])
+        for layer_index in range(n_layers):
+            # problem unitary
+            for _, pair in enumerate(list(graph.edges())):
+                qc.rzz(2 * gamma[layer_index], pair[0], pair[1])
+            # mixer unitary
+            qc = self.get_mixer_from_string(mixerStr, qc, nqubits, beta[layer_index])
 
         if no_meas is False:
             qc.measure_all()
@@ -218,7 +220,7 @@ class Toniq:
         for i in range(len(self.mixers)):
             axs[i, 0].set_ylabel("Beta")
             for j in range(len(self.problems)):
-                values = self.get_function_values(
+                values = self.get_function_values_sv(
                     self.gamma_values,
                     self.beta_values,
                     self.problems[j],
@@ -246,7 +248,7 @@ class Toniq:
         for i in range(len(self.mixers)):
             axs[i, 0].set_ylabel("Beta")
             for j in range(len(self.problems)):
-                values = self.get_function_values(
+                values = self.get_function_values_sv(
                     self.gamma_values,
                     self.beta_values,
                     self.problems[j],
@@ -302,6 +304,6 @@ class Toniq:
 # Usage:
 toniq_instance = Toniq()
 # toniq_instance.run()  # Uncomment if you want a run method
-# toniq_instance.detailed_analysis()  # Uncomment if you want a detailed_analysis method
+toniq_instance.detailed_analysis()  # Uncomment if you want a detailed_analysis method
 toniq_instance.noisy_simulator_analysis()
 toniq_instance.statevector_analysis()
