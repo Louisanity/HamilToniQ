@@ -1,11 +1,12 @@
 from typing import List, Any, Callable, Dict
 
 import numpy as np
+import matplotlib.pyplot as plt
 from functools import partial
-from qiskit import QuantumCircuit
+from qiskit import QuantumCircuit, transpile, Aer, execute
 from qiskit.providers.ibmq import IBMQ
 from qiskit_aer import AerSimulator
-from qiskit import transpile, QuantumCircuit
+from qiskit_ibm_runtime import IBMBackend
 from qiskit.result.counts import Counts
 
 matrix = Any
@@ -92,11 +93,11 @@ def get_fake_backend(backend_name: str) -> AerSimulator:
 
 
 def qiskit_sampler(
-    backend: AerSimulator, n_samples: int, circuit: QuantumCircuit
+    backend, n_samples: int, circuit: QuantumCircuit
 ) -> Counts:
     # get the sampling results from either a simulator or a real hardware
-    transpiled_circuit = transpile(circuit, backend)
-    job = backend.run(transpiled_circuit)
+    #transpiled_circuit = transpile(circuit, backend)
+    job = backend.run(circuit)
     counts = job.result().get_counts()
 
     return counts
@@ -156,17 +157,38 @@ def Ising_to_ansatz(pauli_terms, weights, n_layers, params):
 
         for i in range(n_qubits):
             circuit.rx(theta=params[2 * j + 1], qubit=i)  # mixing terms
+    circuit.measure_all()
     return circuit
 
 
-def cost_func(sampler, Q, n_layers, params) -> float:
+def load_circuit(Q, n_layers, params):
     pauli_terms, weights, offset = Q_to_Ising(Q)
     circuit = Ising_to_ansatz(pauli_terms, weights, n_layers, params)
-    counts = sampler(circuit)
+    return circuit
+
+
+def cost_func(backend, Q, n_layers, params) -> float:
+    circuit = load_circuit(Q, n_layers, params)
+    sampler = load_qiskit_sampler(backend, 1024)
+    transpiled_circuit = transpile(circuit, backend)
+    counts = sampler(transpiled_circuit)
     return counts_to_cost(counts, Q)
 
-def build_cost_func(sampler, Q, n_layers) -> Callable:
-    return partial(cost_func, sampler, Q, n_layers)
+
+def build_cost_func(backend, Q, n_layers) -> Callable:
+    return partial(cost_func, backend, Q, n_layers)
+
 
 def load_qiskit_sampler(backend, n_samples) -> Callable:
     return partial(qiskit_sampler, backend, n_samples)
+
+
+def plot_energy_distribution(circuit, Q):
+    backend = Aer.get_backend("statevector_simulator")
+    counts = execute(circuit, backend, shots = int(1e4)).result().get_counts()
+    energy_dist = {}
+    for key, value in counts.items():
+        vector = [int(i) for i in key]
+        energy = np.dot(vector, np.dot(Q, vector))
+        energy_dist[energy] = value
+    plt.bar(energy_dist.keys(), energy_dist.values())
