@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from functools import partial
 from qiskit import QuantumCircuit, transpile, Aer, execute
-from qiskit.providers.ibmq import IBMQ
+from qiskit.providers.fake_provider import FakeBackendV2
 from qiskit_aer import AerSimulator
 from qiskit_ibm_runtime import IBMBackend
 from qiskit.result.counts import Counts
@@ -170,8 +170,9 @@ def load_circuit(Q, n_layers, params):
 def cost_func(backend, Q, n_layers, params) -> float:
     circuit = load_circuit(Q, n_layers, params)
     sampler = load_qiskit_sampler(backend, 1024)
-    transpiled_circuit = transpile(circuit, backend)
-    counts = sampler(transpiled_circuit)
+    #transpiled_circuit = transpile(circuit, backend)
+    #counts = sampler(transpiled_circuit)
+    counts = sampler(circuit)
     return counts_to_cost(counts, Q)
 
 
@@ -185,10 +186,23 @@ def load_qiskit_sampler(backend, n_samples) -> Callable:
 
 def plot_energy_distribution(circuit, Q):
     backend = Aer.get_backend("statevector_simulator")
-    counts = execute(circuit, backend, shots = int(1e4)).result().get_counts()
+    n_qubits = circuit.num_qubits
+    n_shots = 2**n_qubits*1000
+    counts = execute(circuit, backend, shots = n_shots).result().get_counts()
     energy_dist = {}
     for key, value in counts.items():
         vector = [int(i) for i in key]
         energy = np.dot(vector, np.dot(Q, vector))
-        energy_dist[energy] = value
-    plt.bar(energy_dist.keys(), energy_dist.values())
+        energy_dist[energy] = value / n_shots
+    plt.bar(energy_dist.keys(), energy_dist.values(), width=0.1)
+
+def get_overlap(circuit, le) -> float:
+    backend = Aer.get_backend("statevector_simulator")
+    n_qubits = circuit.num_qubits
+    n_shots = 2**n_qubits*1000
+    counts = execute(circuit, backend, shots = n_shots).result().get_counts()
+    try:
+        lowest_state = le['bin_state']
+    except:
+        lowest_state = 0
+    return counts[lowest_state] / n_shots
