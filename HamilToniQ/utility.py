@@ -140,21 +140,22 @@ def Q_to_paulis(Q):
     coeffs = -np.sum(Q, axis=1) / 2
 
     for i in range(n_qubits):
-        pauli = ['I' for i in range(n_qubits)]
-        pauli[i] = 'Z'
-        pauli_terms.append(''.join(pauli))
+        pauli = ["I" for i in range(n_qubits)]
+        pauli[i] = "Z"
+        pauli_terms.append("".join(pauli))
 
     for i in range(n_qubits - 1):
         for j in range(i + 1, n_qubits):
-            pauli = ['I' for i in range(n_qubits)]
-            pauli[i] = 'Z'
-            pauli[j] = 'Z'
-            pauli_terms.append(''.join(pauli))
+            pauli = ["I" for i in range(n_qubits)]
+            pauli[i] = "Z"
+            pauli[j] = "Z"
+            pauli_terms.append("".join(pauli))
 
             coeff = Q[i][j] / 2
             coeffs = np.concatenate((coeffs, coeff), axis=None)
 
     return SparsePauliOp(pauli_terms, coeffs=coeffs), offset
+
 
 def Ising_to_ansatz(pauli_terms, weights, n_layers, params):
     n_qubits = len(pauli_terms[0])
@@ -228,10 +229,12 @@ def get_overlap(circuit, le) -> float:
     lowest_state = le["dec_state"]
     return abs(sv[lowest_state]) ** 2
 
+
 def store_process(param_list: list, energy_list: list, n_counts, params, eval, dict):
     # used as a callback function
     energy_list.append(eval.real)
     param_list.append(params)
+
 
 def symmetric_matrix_generator(dim: int) -> np.array:
     """
@@ -249,3 +252,35 @@ def symmetric_matrix_generator(dim: int) -> np.array:
 
     return mat
 
+
+def all_quantum_states(n_qubits, budget=None, vec=False):
+    states = []
+    for i in range(2**n_qubits):
+        a = f"{bin(i)[2:]:0>{n_qubits}}"
+        n_ones = 0
+        mark = True
+        if isinstance(budget, int):
+            for j in a:
+                if j == "1":
+                    n_ones += 1
+            if n_ones >= budget:
+                mark = False
+        if mark is True:
+            if vec == False:
+                states.append(a)
+            if vec == True:
+                vector = [0 for i in range(n_qubits)]
+                for i, j in enumerate(a):
+                    if j == "1":
+                        vector[i] = 1
+                states.append(vector)
+    return states
+
+
+def ground_state(Q):
+    # return the ground state (in decimal) of a Q-matrix
+    n_qubits = np.shape(Q)[0]
+    energy_list = []
+    for state in all_quantum_states(n_qubits, vec=True):
+        energy_list.append(np.dot(state, np.dot(Q, state)))
+    return np.argmin(energy_list)
