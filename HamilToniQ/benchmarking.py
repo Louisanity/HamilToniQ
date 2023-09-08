@@ -98,7 +98,7 @@ class Toniq:
 
         return distribution
     
-    def score_auc(reference, data):
+    def score_auc(self, reference, data):
         # return the score of a backend at a certain dim and n_layers
         # This score is calculated using auc (area under the curve)
         # `reference` is pre-calculated data using noiseless simulator
@@ -110,7 +110,7 @@ class Toniq:
         hist_ref = [i/np.size(reference, 0) for i in hist_ref]
         score = 0
         for i, j in zip(hist_ref, hist_data):
-            score += np.min(i, j)
+            score += min(i, j)
         return score
 
 
