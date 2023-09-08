@@ -6,6 +6,7 @@ from typing import Callable, List, Any
 
 import random
 import numpy as np
+from scipy.optimize import curve_fit
 from pathlib import Path
 from scipy.optimize import minimize
 from qiskit import QuantumCircuit, Aer
@@ -13,8 +14,10 @@ from qiskit.primitives import Sampler, Estimator, BackendSampler
 from qiskit.algorithms.minimum_eigensolvers import QAOA
 from qiskit.algorithms.optimizers import COBYLA
 from functools import partial
+import matplotlib.pyplot as plt
+import pandas as pd
 
-from unitity import (
+from utility import (
     build_cost_func,
     load_qiskit_sampler,
     load_circuit,
@@ -23,6 +26,7 @@ from unitity import (
     Q_to_paulis,
     store_process,
     symmetric_matrix_generator,
+    ground_state
 )
 from matrices import *
 
@@ -116,3 +120,57 @@ class Toniq:
     def total_benchmark(self, backend: Hardware_Backend) -> float:
         self.standard_QAOA(backend)
         self.portfolio_optimization(backend)
+
+    def fit(data) -> (float, float):
+        # fit data as a normal distribution
+        def Gaussian_distr(x, sigma, mu):
+            return (
+                1
+                / (sigma * np.sqrt(2 * np.pi))
+                * np.exp(-0.5 * (((x - mu) / sigma) ** 2))
+            )
+
+        upper = np.max(data)
+        lower = np.min(data)
+        hist_y, hist_x = np.histogram(
+            data, np.linspace(lower, upper, upper - lower + 1)
+        )
+        hist_x = hist_x[:-1]
+        hist_y = hist_y / np.shape(data)[0]  # normalization
+        [sigma, mu], _ = curve_fit(
+            Gaussian_distr, hist_x, hist_y, p0=[1, np.average(data)]
+        )
+        residuals = hist_y - Gaussian_distr(hist_x, sigma, mu)
+        ss_res = np.sum(residuals**2)
+        ss_tot = np.sum((hist_y - np.mean(hist_y)) ** 2)
+        r_squared = 1 - (ss_res / ss_tot)
+        print("r_squared", r_squared)
+        plt.plot(hist_x, hist_y)
+        plt.plot(hist_x, Gaussian_distr(hist_x, sigma, mu))
+        return sigma, mu
+    
+    def get_accuracy(self, backend, options=None):
+        # return the probability of measuring the correct result
+        gs = ground_state(self.Q)
+        result = self.default_QAOA(backend, options=options)
+        return result.eigenstate[gs]
+    
+    def get_convergence(self, backend, options=None):
+        # return the number of steps with which QAOA converge
+        self.default_QAOA(backend, options=options) # no need to know the result, callback recorded everything
+        lowest = np.mean(self.energy_list[-20:-1])
+        return np.where(self.energy_list < 0.99 * lowest)[0][0]
+    
+    def get_approx_rate(dim, n_layers):
+        rate = 0
+        return rate
+
+    def save_result(data, file_name, header_name) -> None:
+        # save the result to a csv file
+        try:
+            df = pd.read_csv(file_name)
+            df[header_name] = data
+        except:  # in case this is a new file
+            df = pd.DataFrame(data)
+            df.columns = [header_name]
+        df.to_csv(file_name, header=True, index=False)

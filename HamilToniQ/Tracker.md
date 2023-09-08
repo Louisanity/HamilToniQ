@@ -2,26 +2,16 @@
 
 This tracker is used as a to-do list and track what have been done.
 
-### Benchmarking
+### To do
 
-| Task                    | Assign to ? | Done? |
-| ----------------------- | ----------- | ----- |
-| variance of the dataset |             |       |
-|                         |             |       |
-|                         |             |       |
+* 
 
-### Visualization
+### Doing
 
-| Task | Assign to ? | Done? |
-| ---- | ----------- | ----- |
-|      |             |       |
-|      |             |       |
-|      |             |       |
+* 
 
-### Error correction
+### Done
 
-| Task | Assign to ? | Done? |
-| ---- | ----------- | ----- |
-|      |             |       |
-|      |             |       |
-|      |             |       |
+* Curve fitting
+
+* 
