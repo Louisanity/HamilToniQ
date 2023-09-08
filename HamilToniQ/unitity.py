@@ -8,6 +8,7 @@ from qiskit.providers.fake_provider import FakeBackendV2
 from qiskit_aer import AerSimulator
 from qiskit_ibm_runtime import IBMBackend
 from qiskit.result.counts import Counts
+from qiskit.quantum_info import Statevector, SparsePauliOp
 
 matrix = Any
 circuit = Any
@@ -92,11 +93,9 @@ def get_fake_backend(backend_name: str) -> AerSimulator:
     return backend_sim
 
 
-def qiskit_sampler(
-    backend, n_samples: int, circuit: QuantumCircuit
-) -> Counts:
+def qiskit_sampler(backend, n_samples: int, circuit: QuantumCircuit) -> Counts:
     # get the sampling results from either a simulator or a real hardware
-    #transpiled_circuit = transpile(circuit, backend)
+    # transpiled_circuit = transpile(circuit, backend)
     job = backend.run(circuit)
     counts = job.result().get_counts()
 
@@ -132,6 +131,31 @@ def Q_to_Ising(Q):
     return pauli_terms, weights, offset
 
 
+def Q_to_paulis(Q):
+    n_qubits = np.shape(Q)[0]
+    offset = np.triu(Q, 0).sum() / 2
+    pauli_terms = []
+    coeffs = []
+
+    coeffs = -np.sum(Q, axis=1) / 2
+
+    for i in range(n_qubits):
+        pauli = ['I' for i in range(n_qubits)]
+        pauli[i] = 'Z'
+        pauli_terms.append(''.join(pauli))
+
+    for i in range(n_qubits - 1):
+        for j in range(i + 1, n_qubits):
+            pauli = ['I' for i in range(n_qubits)]
+            pauli[i] = 'Z'
+            pauli[j] = 'Z'
+            pauli_terms.append(''.join(pauli))
+
+            coeff = Q[i][j] / 2
+            coeffs = np.concatenate((coeffs, coeff), axis=None)
+
+    return SparsePauliOp(pauli_terms, coeffs=coeffs), offset
+
 def Ising_to_ansatz(pauli_terms, weights, n_layers, params):
     n_qubits = len(pauli_terms[0])
     circuit = QuantumCircuit(n_qubits)
@@ -157,7 +181,6 @@ def Ising_to_ansatz(pauli_terms, weights, n_layers, params):
 
         for i in range(n_qubits):
             circuit.rx(theta=params[2 * j + 1], qubit=i)  # mixing terms
-    circuit.measure_all()
     return circuit
 
 
@@ -169,9 +192,10 @@ def load_circuit(Q, n_layers, params):
 
 def cost_func(backend, Q, n_layers, params) -> float:
     circuit = load_circuit(Q, n_layers, params)
+    circuit.measure_all()
     sampler = load_qiskit_sampler(backend, 1024)
-    #transpiled_circuit = transpile(circuit, backend)
-    #counts = sampler(transpiled_circuit)
+    # transpiled_circuit = transpile(circuit, backend)
+    # counts = sampler(transpiled_circuit)
     counts = sampler(circuit)
     return counts_to_cost(counts, Q)
 
@@ -187,8 +211,8 @@ def load_qiskit_sampler(backend, n_samples) -> Callable:
 def plot_energy_distribution(circuit, Q):
     backend = Aer.get_backend("statevector_simulator")
     n_qubits = circuit.num_qubits
-    n_shots = 2**n_qubits*1000
-    counts = execute(circuit, backend, shots = n_shots).result().get_counts()
+    n_shots = 2**n_qubits * 1000
+    counts = execute(circuit, backend, shots=n_shots).result().get_counts()
     energy_dist = {}
     for key, value in counts.items():
         vector = [int(i) for i in key]
@@ -196,13 +220,32 @@ def plot_energy_distribution(circuit, Q):
         energy_dist[energy] = value / n_shots
     plt.bar(energy_dist.keys(), energy_dist.values(), width=0.1)
 
+
 def get_overlap(circuit, le) -> float:
-    backend = Aer.get_backend("statevector_simulator")
     n_qubits = circuit.num_qubits
-    n_shots = 2**n_qubits*1000
-    counts = execute(circuit, backend, shots = n_shots).result().get_counts()
-    try:
-        lowest_state = le['bin_state']
-    except:
-        lowest_state = 0
-    return counts[lowest_state] / n_shots
+    n_shots = 2**n_qubits * 1000
+    sv = Statevector(circuit)
+    lowest_state = le["dec_state"]
+    return abs(sv[lowest_state]) ** 2
+
+def store_process(param_list: list, energy_list: list, n_counts, params, eval, dict):
+    # used as a callback function
+    energy_list.append(eval.real)
+    param_list.append(params)
+
+def symmetric_matrix_generator(dim: int) -> np.array:
+    """
+    Generate a random symmetric matrix with a give dimension.
+    args:
+        dim: the number of dimension
+    return:
+        mat: a symmetric matrix
+    """
+    mat = np.random.rand(dim**2)
+    mat = (mat - 0.5) * 2
+    mat = mat.reshape(dim, dim)
+    mat = np.triu(mat)
+    mat += mat.T - np.diag(mat.diagonal())
+
+    return mat
+
